@@ -42,5 +42,14 @@ constexpr std::pair<int, int> directions[8] = {  //  (-1,-1)  (-1,0)   (-1,1)
     std::make_pair(-1,-1)                        //   (1,-1)   (1,0)   (1,1)
 };
 
+// Core game engine.
+// This class owns the board state and the rules of Othello.
+// It does not make decisions; it only knows how to play the game.
+class OthelloBoard {
+public:
+
+private:
+
+};
 
 }
