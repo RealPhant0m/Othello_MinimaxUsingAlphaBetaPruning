@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 #include <utility>
+#include <string>
 
 namespace othello {
 
@@ -47,6 +48,15 @@ constexpr std::pair<int, int> directions[8] = {  //  (-1,-1)  (-1,0)   (-1,1)
 // It does not make decisions; it only knows how to play the game.
 class OthelloBoard {
 public:
+
+    OthelloBoard();
+    explicit OthelloBoard(const std::string& boardString);
+    explicit OthelloBoard(const Board& board);
+
+    // Board state helpers.
+    void convertBoardFormat(const std::string& boardString);
+    std::string convertBoardFormat() const;
+    const Board& board() const;
 
 private:
 
