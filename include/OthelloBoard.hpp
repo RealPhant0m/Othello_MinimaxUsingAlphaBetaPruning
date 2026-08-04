@@ -58,7 +58,18 @@ public:
     std::string convertBoardFormat() const;
     const Board& board() const;
 
+    // Core game rules.
+    std::vector<Move> getValidMoves(Player player) const;
+
+    // Simple utility functions.
+    static char toChar(Player player);
+    bool isOpponent(Player player, int row, int col) const;
+    static bool isInside(int row, int col);
+
 private:
+    Board board_{};
+
+    std::vector<int> getFlippableDirections(Player player, int row, int col) const;
 
 };
 
