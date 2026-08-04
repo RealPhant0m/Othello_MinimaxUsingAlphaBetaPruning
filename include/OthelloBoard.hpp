@@ -24,11 +24,11 @@ struct Move {
     std::vector<int> flippableDirections;
 };
 
-namespace cellState {
-constexpr char EMPTY = '0';
-constexpr char WHITEPLAYER = '1';
-constexpr char BLACKPLAYER = '2';
-}
+enum class Player : char {
+    Empty = '0',
+    White = '1',
+    Black = '2'
+};
 
 // Representation of delta row and delta column,
 // whose values ​​vary from -1 to 1, as an array of pairs called "directions"
