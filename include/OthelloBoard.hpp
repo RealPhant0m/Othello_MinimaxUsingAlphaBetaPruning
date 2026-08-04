@@ -23,11 +23,11 @@ struct Move {
     std::vector<int> flippableDirections;
 };
 
-enum CellState : char {
-    EMPTY = '0',
-    WHITE = '1',
-    BLACK = '2'
-};
+namespace cellState {
+constexpr char EMPTY = '0';
+constexpr char WHITEPLAYER = '1';
+constexpr char BLACKPLAYER = '2';
+}
 
 // Representation of delta row and delta column,
 // whose values ​​vary from -1 to 1, as an array of pairs called "directions"
