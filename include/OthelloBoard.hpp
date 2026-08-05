@@ -19,8 +19,8 @@ using Board = std::array<std::array<char, BOARD_SIZE>, BOARD_SIZE>;
 // row/col = destination position
 // flips = directions that will be flipped if this move is played
 struct Move {
-    short int row;
-    short int col;
+    int row;
+    int col;
     std::vector<int> flippableDirections;
 };
 
@@ -54,23 +54,30 @@ public:
     explicit OthelloBoard(const Board& board);
 
     // Board state helpers.
+    void reset();
     void convertBoardFormat(const std::string& boardString);
     std::string convertBoardFormat() const;
     const Board& board() const;
 
     // Core game rules.
     std::vector<Move> getValidMoves(Player player) const;
+    // Apply a move to the board and return the new board.
+    Board applyMove(const Move& move, Player player) const;
+    bool isGameOver(std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const;
+    unsigned int countDiscsOnBoard() const;
 
     // Simple utility functions.
     static char toChar(Player player);
-    bool isOpponent(Player player, int row, int col) const;
+    static Player getOpponent(Player currentPlayer);
     static bool isInside(int row, int col);
-
+    
 private:
     Board board_{};
 
+    void setCell(int row, int col, char value);
+    bool isOpponent(Player currentPlayer, int row, int col) const;
     std::vector<int> getFlippableDirections(Player player, int row, int col) const;
 
 };
 
-}
+} // namespace othello
