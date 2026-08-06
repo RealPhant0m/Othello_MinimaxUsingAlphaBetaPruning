@@ -83,7 +83,7 @@ Board OthelloBoard::applyMove(const Move& move, Player player) const {
     // Place the player's disc at the specified position.
     nextBoard[move.row][move.col] = toChar(player);
 
-    inline auto flipDiscs = [&nextBoard, &player] (int row, int col, int directionIndex) {
+    auto flipDiscs = [&nextBoard, &player] (int row, int col, int directionIndex) {
         int r = row + directions[directionIndex].first;
         int c = col + directions[directionIndex].second;
         while (isInside(r, c) && nextBoard[r][c] == toChar(getOpponent(player))) {
