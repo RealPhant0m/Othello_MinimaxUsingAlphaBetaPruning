@@ -47,7 +47,7 @@ void testApplyMoveFlipsDiscs() {
     bool foundMove = false;
     Move chosenMove;
     for (auto& move : validMoves) {
-        if (move.row == 2 && move.col == 4) {
+        if (move.row == 3 && move.col == 2) {
             foundMove = true;
             chosenMove = move;
             break;
@@ -56,8 +56,8 @@ void testApplyMoveFlipsDiscs() {
     assert(foundMove);
 
     Board nextBoard = board.applyMove(chosenMove, Player::Black);
-    assert(nextBoard[2][4] == OthelloBoard::toChar(Player::Black));
-    assert(nextBoard[3][4] == OthelloBoard::toChar(Player::Black));
+    assert(nextBoard[3][3] == OthelloBoard::toChar(Player::Black));
+    assert(nextBoard[3][2] == OthelloBoard::toChar(Player::Black));
 }
 
 int main() {
