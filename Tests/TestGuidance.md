@@ -194,3 +194,113 @@ Tests\test_OthelloBoard\test_OthelloBoard.exe
 - Use a task that compiles both source files
 - Use a launch config pointing to the compiled executable
 - Enable `-g` in the compile command
+
+---
+
+## 9. Running and debugging `test_BoardUtils.cpp`
+
+The `BoardUtils` test file is located at `Tests/test_BoardUtils/test_BoardUtils.cpp` and exercises the `BoardUtils` methods for formatting, printing, and coordinate conversion.
+
+### 9.1. Compile and run from the project root
+
+Open a terminal in the repository root. If you are already inside the repository, you can use:
+
+```powershell
+cd .\${workspaceFolder}
+```
+
+If you are starting from a parent folder, navigate to the repository folder first:
+
+```powershell
+cd .\Othello_MinimaxWithAlpha-BetaPruning
+```
+
+Run:
+
+```powershell
+g++ -std=c++17 -g -Iinclude src/BoardUtils.cpp src/OthelloBoard.cpp Tests/test_BoardUtils/test_BoardUtils.cpp -o Tests/test_BoardUtils/test_BoardUtils.exe
+```
+
+Then execute:
+
+```powershell
+Tests\test_BoardUtils\test_BoardUtils.exe
+```
+
+Expected output:
+
+```text
+All BoardUtils tests passed.
+```
+
+### 9.2. Compile and run from the test folder
+
+Open a terminal in the test folder. From the repository root, use:
+
+```powershell
+cd .\Tests\test_BoardUtils
+```
+
+Run:
+
+```powershell
+g++ -std=c++17 -g -I../../include ../../src/BoardUtils.cpp ../../src/OthelloBoard.cpp test_BoardUtils.cpp -o test_BoardUtils.exe
+```
+
+Then run:
+
+```powershell
+.\test_BoardUtils.exe
+```
+
+### 9.3. Why both implementation files are needed
+
+The `BoardUtils` test uses both `BoardUtils` and `OthelloBoard` behavior. The test file creates `OthelloBoard` objects and also calls methods from `BoardUtils`, so the compilation step must include:
+
+- `src/BoardUtils.cpp`
+- `src/OthelloBoard.cpp`
+
+If you compile only the test file, the build will fail with linker errors such as `undefined reference`.
+
+### 9.4. Debugging `test_BoardUtils.cpp` in VS Code
+
+To debug this file in Visual Studio Code, use a task that includes both implementation files.
+
+Example build task command:
+
+```powershell
+g++ -std=c++17 -g -I${workspaceFolder}/include ${workspaceFolder}/src/BoardUtils.cpp ${workspaceFolder}/src/OthelloBoard.cpp ${workspaceFolder}/Tests/test_BoardUtils/test_BoardUtils.cpp -o ${workspaceFolder}/Tests/test_BoardUtils/test_BoardUtils.exe
+```
+
+Then use a launch configuration that points to:
+
+Example `launch.json` entry:
+```json
+{
+  "name": "Debug BoardUtils test",
+  "type": "cppdbg",
+  "request": "launch",
+  "program": "${workspaceFolder}/Tests/test_BoardUtils/test_BoardUtils.exe",
+  "args": [],
+  "stopAtEntry": false,
+  "cwd": "${workspaceFolder}",
+  "environment": [],
+  "externalConsole": false,
+  "MIMode": "gdb",
+  "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+  "preLaunchTask": "build OthelloBoard test"
+}
+```
+
+Recommended debugging steps:
+
+1. Set breakpoints inside `Tests/test_BoardUtils/test_BoardUtils.cpp`.
+2. Build the test with the command above.
+3. Start the debugger from the Run and Debug panel.
+4. Step through the test functions to inspect the values returned by `BoardUtils::formatBoard`, `BoardUtils::printBoard`, `BoardUtils::toCoordinates`, and `BoardUtils::toIndex`.
+
+### 9.5. Troubleshooting the BoardUtils test
+
+- If you see `undefined reference`, ensure both `src/BoardUtils.cpp` and `src/OthelloBoard.cpp` are included in the build command.
+- If the debugger cannot launch the executable, confirm that `Tests/test_BoardUtils/test_BoardUtils.exe` exists after the build.
+- If the test fails, check the assertion line in `Tests/test_BoardUtils/test_BoardUtils.cpp` to see which case is failing.
