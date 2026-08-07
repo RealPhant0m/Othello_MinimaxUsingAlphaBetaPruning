@@ -6,6 +6,8 @@
 
 namespace othello {
 
+// Utility layer for presentation and conversion.
+// This class helps print the board and convert between index and coordinates.
 class BoardUtils {
 public:
     static std::string formatBoard(const OthelloBoard& board);
