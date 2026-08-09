@@ -12,6 +12,9 @@ class OthelloAI {
 public:
     OthelloAI(Player player, unsigned int explorationDepth = 5);
 
+    // Main public entry point.
+    Move chooseMove(const OthelloBoard& board) const;
+
     // This controls whether the depth of the search is less than or 
     // greater than a certain limit. If more than about 10 or 11 depth is entered, 
     // the tree search will take a long time, so if a depth greater than 
@@ -33,6 +36,16 @@ private:
     unsigned int explorationDepth_;
 
     Player player_;
+
+    // Evaluation function
+    float evaluate(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const;
+
+    // Heuristic Functions
+    inline float calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const;
+    inline float calculateCoinParity(const OthelloBoard& board, Player player) const;
+    inline float calculateStability(const OthelloBoard& board, Player player) const;
+    inline float calculateCornerControl(const OthelloBoard& board, Player player) const;
+    
 };
 
 } // namespace othello
