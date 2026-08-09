@@ -28,4 +28,13 @@ float OthelloAI::evaluate(const OthelloBoard& board, Player player, std::vector<
             ((weightOfCoinParity_    != 0 ) ? (weightOfCoinParity_    * calculateCoinParity(board, player))                                     : (0)));
 }
 
+inline float OthelloAI::calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const {
+    int playerValidMovesCount = playerValidMoves.size();
+    int opponentValidMovesCount = opponentValidMoves.size();
+    if (playerValidMovesCount + opponentValidMovesCount != 0)
+        return ((static_cast<float>(playerValidMovesCount - opponentValidMovesCount) / static_cast<float>(playerValidMovesCount + opponentValidMovesCount)) * 100);
+    return 0;
+}
+
+
 } // namespace othello
