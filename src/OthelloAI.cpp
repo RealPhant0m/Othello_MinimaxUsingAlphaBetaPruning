@@ -28,6 +28,24 @@ float OthelloAI::evaluate(const OthelloBoard& board, Player player, std::vector<
             ((weightOfCoinParity_    != 0 ) ? (weightOfCoinParity_    * calculateCoinParity(board, player))                                     : (0)));
 }
 
+inline float OthelloAI::calculateCornerControl(const OthelloBoard& board, Player player) const {
+    const auto& boardFormat = board.board();
+    int playerCornersCount = 0;
+    int opponentCornersCount = 0;
+    const std::array<std::pair<int, int>, 4> corners = {{{0, 0}, {0, 7}, {7, 0}, {7, 7}}};
+    for (const auto& [row, col] : corners) {
+        const char cell = boardFormat[row][col];
+        if (cell == OthelloBoard::toChar(player))
+            ++playerCornersCount;
+        else if (cell == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
+            ++opponentCornersCount;
+    }
+    if (playerCornersCount + opponentCornersCount != 0)
+        return ((static_cast<float>(playerCornersCount - opponentCornersCount) / static_cast<float>(playerCornersCount + opponentCornersCount)) * 100);
+    return 0;
+}
+
+
 inline float OthelloAI::calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const {
     int playerValidMovesCount = playerValidMoves.size();
     int opponentValidMovesCount = opponentValidMoves.size();
@@ -52,7 +70,5 @@ inline float OthelloAI::calculateCoinParity(const OthelloBoard& board, Player pl
         return ((static_cast<float>(playerDiscsCount - opponentDiscsCount) / static_cast<float>(playerDiscsCount + opponentDiscsCount)) * 100);
     return 0;
 }
-
-
 
 } // namespace othello
