@@ -39,7 +39,7 @@ inline float OthelloAI::calculateMobility(const OthelloBoard& board, Player play
 inline float OthelloAI::calculateCoinParity(const OthelloBoard& board, Player player) const {
     int playerDiscsCount = 0;
     int opponentDiscsCount = 0;
-    Board boardFormat = board.board();
+    const auto& boardFormat = board.board();
     for (const auto& row : boardFormat) {
         for (char cell : row) {
             if (cell == OthelloBoard::toChar(player))
