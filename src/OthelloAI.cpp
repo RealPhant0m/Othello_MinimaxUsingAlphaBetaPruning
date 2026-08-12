@@ -53,236 +53,84 @@ inline float OthelloAI::calculatePotentialCorners(const OthelloBoard& board, Pla
     int dc; // Delta Column
     const auto& boardFormat = board.board();
 
+    auto checkPotentialCorner = [&boardFormat, &player, &playerPotentialCornersCount, &opponentPotentialCornersCount] 
+                                (int dr_, int dc_, int directionIndex) {
+                            
+        if (boardFormat[dr_][dc_] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
+            while (OthelloBoard::isInside(dr_, dc_) && boardFormat[dr_][dc_] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
+                dr_ += directions[directionIndex].first;
+                dc_ += directions[directionIndex].second;
+            }
+            if (OthelloBoard::isInside(dr_, dc_) && boardFormat[dr_][dc_] == OthelloBoard::toChar(player))
+                playerPotentialCornersCount++;
+        } else if (boardFormat[dr_][dc_] == OthelloBoard::toChar(player)) {
+            while (OthelloBoard::isInside(dr_, dc_) && boardFormat[dr_][dc_] == OthelloBoard::toChar(player)) {
+                dr_ += directions[directionIndex].first;
+                dc_ += directions[directionIndex].second;
+            }
+            if (OthelloBoard::isInside(dr_, dc_) && boardFormat[dr_][dc_] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
+                opponentPotentialCornersCount++;
+        }
+    };
+
     // Check top-left corner
     if (boardFormat[0][0] == OthelloBoard::toChar(Player::Empty)) {
-
         dr = directions[2].first;
         dc = directions[2].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[2].first;
-                dc += directions[2].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[2].first;
-                dc += directions[2].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
-
+        checkPotentialCorner(dr, dc, 2);
+        
         dr = directions[3].first;
         dc = directions[3].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[3].first;
-                dc += directions[3].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[3].first;
-                dc += directions[3].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
-
+        checkPotentialCorner(dr, dc, 3);
+        
         dr = directions[4].first;
         dc = directions[4].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[4].first;
-                dc += directions[4].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[4].first;
-                dc += directions[4].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
+        checkPotentialCorner(dr, dc, 4);
     }
 
     // Check top-right corner
     if (boardFormat[0][BOARD_SIZE - 1] == OthelloBoard::toChar(Player::Empty)) {
-        
         dr = directions[6].first;
         dc = BOARD_SIZE - 1 + directions[6].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[6].first;
-                dc += directions[6].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[6].first;
-                dc += directions[6].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
+        checkPotentialCorner(dr, dc, 6);
 
         dr = directions[5].first;
         dc = BOARD_SIZE - 1 + directions[5].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[5].first;
-                dc += directions[5].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[5].first;
-                dc += directions[5].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
-
+        checkPotentialCorner(dr, dc, 5);
+        
         dr = directions[4].first;
         dc = BOARD_SIZE - 1 + directions[4].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[4].first;
-                dc += directions[4].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[4].first;
-                dc += directions[4].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
+        checkPotentialCorner(dr, dc, 4);
     }
 
     // Check bottom-left corner
     if (boardFormat[BOARD_SIZE - 1][0] == OthelloBoard::toChar(Player::Empty)) {
-
         dr = BOARD_SIZE - 1 + directions[2].first;
         dc = directions[2].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[2].first;
-                dc += directions[2].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[2].first;
-                dc += directions[2].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
+        checkPotentialCorner(dr, dc, 2);
 
         dr = BOARD_SIZE - 1 + directions[1].first;
         dc = directions[1].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[1].first;
-                dc += directions[1].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[1].first;
-                dc += directions[1].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
+        checkPotentialCorner(dr, dc, 1);
 
         dr = BOARD_SIZE - 1 + directions[0].first;
         dc = directions[0].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[0].first;
-                dc += directions[0].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[0].first;
-                dc += directions[0].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
+        checkPotentialCorner(dr, dc, 0);
     }
 
     // Check bottom-right corner
     if (boardFormat[BOARD_SIZE - 1][BOARD_SIZE - 1] == OthelloBoard::toChar(Player::Empty)) {
-
         dr = BOARD_SIZE - 1 + directions[0].first;
         dc = BOARD_SIZE - 1 + directions[0].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[0].first;
-                dc += directions[0].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[0].first;
-                dc += directions[0].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
+        checkPotentialCorner(dr, dc, 0);
 
         dr = BOARD_SIZE - 1 + directions[7].first;
         dc = BOARD_SIZE - 1 + directions[7].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[7].first;
-                dc += directions[7].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[7].first;
-                dc += directions[7].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
+        checkPotentialCorner(dr, dc, 7);
 
         dr = BOARD_SIZE - 1 + directions[6].first;
         dc = BOARD_SIZE - 1 + directions[6].second;
-        if (boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
-                dr += directions[6].first;
-                dc += directions[6].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player))
-                playerPotentialCornersCount++;
-        } else if (boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-            while (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(player)) {
-                dr += directions[6].first;
-                dc += directions[6].second;
-            }
-            if (OthelloBoard::isInside(dr, dc) && boardFormat[dr][dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player)))
-                opponentPotentialCornersCount++;
-        }
+        checkPotentialCorner(dr, dc, 6);
     }
 
     if (playerPotentialCornersCount + opponentPotentialCornersCount != 0)
