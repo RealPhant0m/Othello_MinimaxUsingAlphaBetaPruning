@@ -42,12 +42,14 @@ private:
 
     // Heuristic Functions
     inline float calculateCornerControl(const OthelloBoard& board, Player player) const;
+    inline float calculatePotentialCornerWatch(const OthelloBoard& board, Player Player) const;
     inline float calculateStability(const OthelloBoard& board, Player player) const;
     inline float calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const;
     inline float calculateCoinParity(const OthelloBoard& board, Player player) const;
 
     // Heuristic's Weights
     float weightOfCornerControl_ = 3.0f;
+    float weightOfPotentialCornerWatch_ = 2.8f;
     float weightOfStability_ = 2.5f;
     float weightOfMobility_ = 2.0f;
     float weightOfCoinParity_ = 1.0f;
