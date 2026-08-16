@@ -56,7 +56,7 @@ private:
     // This auxiliary method examines one of the 
     // four axes of the disk in question at any given moment.
     inline DiscStabilityState checkAxisStability(
-        const Board& board,
+        const OthelloBoard& board,
         int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE],
         int discStateIndex,
         Player player,

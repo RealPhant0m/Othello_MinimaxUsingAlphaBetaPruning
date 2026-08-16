@@ -1,6 +1,7 @@
 #include "OthelloAI.hpp"
 
 #include <algorithm>
+#include <array>
 
 namespace othello {
 
@@ -136,6 +137,104 @@ inline float OthelloAI::calculatePotentialCorners(const OthelloBoard& board, Pla
     if (playerPotentialCornersCount + opponentPotentialCornersCount != 0)
         return ((static_cast<float>(playerPotentialCornersCount - opponentPotentialCornersCount) / static_cast<float>(playerPotentialCornersCount + opponentPotentialCornersCount)) * 100);
     return 0;
+}
+
+inline OthelloAI::DiscStabilityState OthelloAI::checkAxisStability(
+    const OthelloBoard& board,
+    int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE],
+    int discStateIndex,
+    Player player,
+    int rowOfDisc,
+    int colOfDisc,
+    std::pair<int, int> axisDirectionCoordinates) const 
+{   
+    int dr = axisDirectionCoordinates.first;
+    int dc = axisDirectionCoordinates.second;
+
+    int forwardRow  = rowOfDisc + dr;
+    int forwardCol  = colOfDisc + dc;
+    int backwardRow = rowOfDisc - dr;
+    int backwardCol = colOfDisc - dc;
+
+    // When a disc is placed on the edge of the board, then at least 3 of its 4 axes 
+    // have one of their directions towards the outside of the board, which means that 
+    // along any of these axes, the opponent cannot flip the disc in question. 
+    // Therefore, the disc in question is stable only on that axis.
+    if (!OthelloBoard::isInside(forwardRow, forwardCol) || !OthelloBoard::isInside(backwardRow, backwardCol))
+        return Stable;
+    else if (discsStabilityStateMap[forwardRow][forwardCol] == discStateIndex || discsStabilityStateMap[backwardRow][backwardCol] == discStateIndex)
+        return Stable;
+
+    const auto& boardFormat = board.board();
+    char _player = OthelloBoard::toChar(player);
+    char _opponent = OthelloBoard::toChar(OthelloBoard::getOpponent(player));
+    char _empty = OthelloBoard::toChar(Player::Empty);
+
+    // This array represents status of each cell of the board along the axis. 
+    // U : Unknown status symbol.
+    // X : Out of bounds symbol. this means the coordinate is outside of the board.
+    // P : Own disc(player's disc) with unknown status.
+    // O : Opponent's disc with unknown status.
+    // E : Empty cell symbol.
+    char axisLine[10] = {'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U'};
+
+    int r = rowOfDisc;
+    int c = colOfDisc;
+    int arrayIndex = 0;
+
+    // Moving backward along the axis until reaching a point outside the board.
+    while (OthelloBoard::isInside(r, c)) {
+        r -= dr;
+        c -= dc;
+    }
+    axisLine[arrayIndex] = 'X';
+    r += dr;
+    c += dc;
+    int playerIndex; // Indicates the position of the player's disc in the axisLine array.
+
+    while (OthelloBoard::isInside(r, c)) {
+        if (boardFormat[r][c] == _player)
+            axisLine[++arrayIndex] = 'P';
+        else if (boardFormat[r][c] == _opponent)
+            axisLine[++arrayIndex] = 'O';
+        else if (boardFormat[r][c] == _empty)
+            axisLine[++arrayIndex] = 'E';
+
+        if (r == rowOfDisc && c == colOfDisc)
+            playerIndex = arrayIndex;
+        
+        r += dr;
+        c += dc;
+    }
+
+    // When we exit the while loop above, the values ​​of r and c are values ​
+    // ​that are outside the dimensions of the board. So we have reached 
+    // the end of that axis and we need to place a value in axisLine 
+    // that represents the outside of the board.
+    axisLine[++arrayIndex] = 'X';
+
+    arrayIndex = playerIndex;
+    while (axisLine[arrayIndex] == 'P')
+        arrayIndex--;
+    if (axisLine[arrayIndex] == 'O') {
+        arrayIndex = playerIndex + 1;
+        while (axisLine[arrayIndex] == 'P')
+            arrayIndex++;
+        if (axisLine[arrayIndex] == 'E')
+            return Unstable;
+    }
+
+    arrayIndex = playerIndex;
+    while (axisLine[arrayIndex] == 'P')
+        arrayIndex++;
+    if (axisLine[arrayIndex] == 'O') {
+        arrayIndex = playerIndex - 1;
+        while (axisLine[arrayIndex] == 'P')
+            arrayIndex--;
+        if (axisLine[arrayIndex] == 'E')
+            return Unstable;
+    }
+
 }
 
 inline float OthelloAI::calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const {
