@@ -29,6 +29,12 @@ private:
     static constexpr float POSITIVE_INFINITY = std::numeric_limits<float>::max();
     static constexpr float NEGATIVE_INFINITY = -std::numeric_limits<float>::max();
 
+    enum DiscStabilityState {
+        Stable,
+        SemiStable,
+        Unstable
+    };
+
     // To count the number of nodes visited in the minimax algorithm.
     mutable unsigned long long visitedNodesCount_ = 0;
 
@@ -46,6 +52,18 @@ private:
     inline float calculateStability(const OthelloBoard& board, Player player) const;
     inline float calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const;
     inline float calculateCoinParity(const OthelloBoard& board, Player player) const;
+
+    // This auxiliary method examines one of the 
+    // four axes of the disk in question at any given moment.
+    inline DiscStabilityState checkAxisStability(
+        const Board& board,
+        int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE],
+        int discStateIndex,
+        Player player,
+        int rowOfDisc,
+        int colOfDisc,
+        std::pair<int, int> axisDirectionCoordinates
+    ) const;
 
     // Heuristic's Weights
     float weightOfCornerControl_    = 3.0f;
