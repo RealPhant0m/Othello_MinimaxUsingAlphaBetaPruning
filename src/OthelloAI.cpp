@@ -138,6 +138,25 @@ inline float OthelloAI::calculatePotentialCorners(const OthelloBoard& board, Pla
     return 0;
 }
 
+inline OthelloAI::DiscStabilityState OthelloAI::checkDiscStability(
+    const OthelloBoard& board,
+    int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE],
+    int discStateIndex,
+    Player player,
+    int rowOfDisc,
+    int colOfDisc) const 
+{
+    DiscStabilityState discStatusAlongAxis;
+    for (int i = 0; i < 4; i++) {
+        discStatusAlongAxis = checkAxisStability(board, discsStabilityStateMap, discStateIndex, player, rowOfDisc, colOfDisc, directions[i]);
+        if (discStatusAlongAxis == Unstable)
+            return Unstable;
+        if (discStatusAlongAxis == SemiStable)
+            return SemiStable;
+    }
+    return Stable;
+}
+
 inline OthelloAI::DiscStabilityState OthelloAI::checkAxisStability(
     const OthelloBoard& board,
     int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE],
