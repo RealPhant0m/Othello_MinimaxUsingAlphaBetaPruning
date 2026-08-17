@@ -53,6 +53,17 @@ private:
     inline float calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const;
     inline float calculateCoinParity(const OthelloBoard& board, Player player) const;
 
+    // This method examines all four axes 
+    // around a disc to determine its stability.
+    inline DiscStabilityState checkDiscStability(
+        const OthelloBoard& board,
+        int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE],
+        int discStateIndex,
+        Player player,
+        int rowOfDisc,
+        int colOfDisc
+    ) const;
+
     // This auxiliary method examines one of the 
     // four axes of the disk in question at any given moment.
     inline DiscStabilityState checkAxisStability(
