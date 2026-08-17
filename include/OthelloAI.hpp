@@ -58,7 +58,7 @@ private:
     inline DiscStabilityState checkDiscStability(
         const OthelloBoard& board,
         int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE],
-        int discStateIndex,
+        int discStabilityIndex,
         Player player,
         int rowOfDisc,
         int colOfDisc
@@ -69,7 +69,7 @@ private:
     inline DiscStabilityState checkAxisStability(
         const OthelloBoard& board,
         int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE],
-        int discStateIndex,
+        int discStabilityIndex,
         Player player,
         int rowOfDisc,
         int colOfDisc,

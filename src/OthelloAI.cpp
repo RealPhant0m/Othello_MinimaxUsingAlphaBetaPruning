@@ -138,29 +138,129 @@ inline float OthelloAI::calculatePotentialCorners(const OthelloBoard& board, Pla
     return 0;
 }
 
+inline float OthelloAI::calculateStability(const OthelloBoard& board, Player player) const {
+    int playerStableDiscsCount = 0;
+    int opponentStableDiscsCount = 0;
+
+    const auto& boardFormat = board.board();
+    char _player = OthelloBoard::toChar(player);
+    char _opponent = OthelloBoard::toChar(OthelloBoard::getOpponent(player));
+
+    int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE] = 
+        {{-2,-2,-2,-2,-2,-2,-2,-2}, // -2: Cell with unknown status
+         {-2,-2,-2,-2,-2,-2,-2,-2}, // -4: This Cell Contains Opponent's Unstable Disc
+         {-2,-2,-2,-2,-2,-2,-2,-2}, // -3: This Cell Contains Opponent's SemiStable Disc
+         {-2,-2,-2,-2,-2,-2,-2,-2}, // -1: This Cell Contains Opponent's Stable Disc
+         {-2,-2,-2,-2,-2,-2,-2,-2}, //  1: This Cell Contains Player's Stable Disc 
+         {-2,-2,-2,-2,-2,-2,-2,-2}, //  3: This Cell Contains Player's SemiStable Disc
+         {-2,-2,-2,-2,-2,-2,-2,-2}, //  4: This Cell Contains Player's Unstable Disc
+         {-2,-2,-2,-2,-2,-2,-2,-2}};
+
+    auto runDiscChecker = [this, &discsStabilityStateMap, &boardFormat, &board] 
+        (Player player, int rowOfDisc, int colOfDisc, int stableIndex, int semistableIndex, int unstableIndex)
+    {
+        DiscStabilityState discStatus;
+        discStatus = checkDiscStability(board, discsStabilityStateMap, stableIndex, player, rowOfDisc, colOfDisc);
+        if (discStatus == OthelloAI::Stable)
+            discsStabilityStateMap[rowOfDisc][colOfDisc] = stableIndex;
+        else if (discStatus == OthelloAI::SemiStable)
+            discsStabilityStateMap[rowOfDisc][colOfDisc] = semistableIndex;
+        else if (discStatus == OthelloAI::Unstable)
+            discsStabilityStateMap[rowOfDisc][colOfDisc] = unstableIndex;
+    };
+
+    for (int col = 0; col < BOARD_SIZE; col++) {
+        //Check the top and Bottom Edge
+        if (boardFormat[0][col] == _player)
+            runDiscChecker(player, 0, col, 1, 3, 4);
+        else if (boardFormat[0][col] == _opponent)
+            runDiscChecker(OthelloBoard::getOpponent(player), 0, col, -1, -3, -4);
+        if (boardFormat[7][col] == _player) 
+            runDiscChecker(player, 7, col, 1, 3, 4);
+        else if (boardFormat[7][col] == _opponent)
+            runDiscChecker(OthelloBoard::getOpponent(player), 7, col, -1, -3, -4);
+    }
+    for (int col = BOARD_SIZE - 1; col >= 0; col--) {
+        //Check the top and Bottom Edges in reverse order
+        if (boardFormat[0][col] == _player)
+            runDiscChecker(player, 0, col, 1, 3, 4);
+        else if (boardFormat[0][col] == _opponent)
+            runDiscChecker(OthelloBoard::getOpponent(player), 0, col, -1, -3, -4);
+        if (boardFormat[7][col] == _player) 
+            runDiscChecker(player, 7, col, 1, 3, 4);
+        else if (boardFormat[7][col] == _opponent)
+            runDiscChecker(OthelloBoard::getOpponent(player), 7, col, -1, -3, -4);
+    }
+
+    for (int row = 0; row < BOARD_SIZE; row++) {
+        //Check the Left and Right Edges
+        if (boardFormat[row][0] == _player)
+            runDiscChecker(player, row, 0, 1, 3, 4);
+        else if (boardFormat[row][0] == _opponent)
+            runDiscChecker(OthelloBoard::getOpponent(player), row, 0, -1, -3, -4);
+        if (boardFormat[row][7] == _player)
+            runDiscChecker(player, row, 7, 1, 3, 4);
+        else if (boardFormat[row][7] == _opponent)
+            runDiscChecker(OthelloBoard::getOpponent(player), row, 7, -1, -3, -4);
+    }
+    for (int row = BOARD_SIZE - 1; row >= 0; row--) {
+        //Check the Left and Right Edges in reverse order
+        if (boardFormat[row][0] == _player)
+            runDiscChecker(player, row, 0, 1, 3, 4);
+        else if (boardFormat[row][0] == _opponent)
+            runDiscChecker(OthelloBoard::getOpponent(player), row, 0, -1, -3, -4);
+        if (boardFormat[row][7] == _player)
+            runDiscChecker(player, row, 7, 1, 3, 4);
+        else if (boardFormat[row][7] == _opponent)
+            runDiscChecker(OthelloBoard::getOpponent(player), row, 7, -1, -3, -4);
+    }
+
+    for (int row = 1; row < BOARD_SIZE - 1; row++) {
+        for (int col = 1; col < BOARD_SIZE - 1; col++) {
+            if (boardFormat[row][col] == _player)
+                runDiscChecker(player, row, col, 1, 3, 4);
+            else if (boardFormat[row][col] == _opponent)
+                runDiscChecker(OthelloBoard::getOpponent(player), row, col, -1, -3, -4);
+        }
+    }
+
+    for (const auto& row : discsStabilityStateMap) {
+        for (int cell : row) {
+            if (cell == 1)
+                playerStableDiscsCount++;
+            else if (cell == -1)
+                opponentStableDiscsCount++;
+        }
+    }
+
+    if (playerStableDiscsCount + opponentStableDiscsCount != 0)
+        return ((static_cast<float>(playerStableDiscsCount - opponentStableDiscsCount) / static_cast<float>(playerStableDiscsCount + opponentStableDiscsCount)) * 100);
+    return 0;
+}
+
 inline OthelloAI::DiscStabilityState OthelloAI::checkDiscStability(
     const OthelloBoard& board,
     int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE],
-    int discStateIndex,
+    int discStabilityIndex,
     Player player,
     int rowOfDisc,
     int colOfDisc) const 
 {
     DiscStabilityState discStatusAlongAxis;
     for (int i = 0; i < 4; i++) {
-        discStatusAlongAxis = checkAxisStability(board, discsStabilityStateMap, discStateIndex, player, rowOfDisc, colOfDisc, directions[i]);
-        if (discStatusAlongAxis == Unstable)
-            return Unstable;
-        if (discStatusAlongAxis == SemiStable)
-            return SemiStable;
+        discStatusAlongAxis = checkAxisStability(board, discsStabilityStateMap, discStabilityIndex, player, rowOfDisc, colOfDisc, directions[i]);
+        if (discStatusAlongAxis == OthelloAI::Unstable)
+            return OthelloAI::Unstable;
+        if (discStatusAlongAxis == OthelloAI::SemiStable)
+            return OthelloAI::SemiStable;
     }
-    return Stable;
+    return OthelloAI::Stable;
 }
 
 inline OthelloAI::DiscStabilityState OthelloAI::checkAxisStability(
     const OthelloBoard& board,
     int discsStabilityStateMap[BOARD_SIZE][BOARD_SIZE],
-    int discStateIndex,
+    int discStabilityIndex,
     Player player,
     int rowOfDisc,
     int colOfDisc,
@@ -179,9 +279,9 @@ inline OthelloAI::DiscStabilityState OthelloAI::checkAxisStability(
     // along any of these axes, the opponent cannot flip the disc in question. 
     // Therefore, the disc in question is stable only on that axis.
     if (!OthelloBoard::isInside(forwardRow, forwardCol) || !OthelloBoard::isInside(backwardRow, backwardCol))
-        return Stable;
-    else if (discsStabilityStateMap[forwardRow][forwardCol] == discStateIndex || discsStabilityStateMap[backwardRow][backwardCol] == discStateIndex)
-        return Stable;
+        return OthelloAI::Stable;
+    else if (discsStabilityStateMap[forwardRow][forwardCol] == discStabilityIndex || discsStabilityStateMap[backwardRow][backwardCol] == discStabilityIndex)
+        return OthelloAI::Stable;
 
     const auto& boardFormat = board.board();
     char _player = OthelloBoard::toChar(player);
@@ -239,7 +339,7 @@ inline OthelloAI::DiscStabilityState OthelloAI::checkAxisStability(
         while (axisLine[arrayIndex] == 'P')
             arrayIndex++;
         if (axisLine[arrayIndex] == 'E')
-            return Unstable;
+            return OthelloAI::Unstable;
     }
 
     arrayIndex = playerIndex;
@@ -250,14 +350,14 @@ inline OthelloAI::DiscStabilityState OthelloAI::checkAxisStability(
         while (axisLine[arrayIndex] == 'P')
             arrayIndex--;
         if (axisLine[arrayIndex] == 'E')
-            return Unstable;
+            return OthelloAI::Unstable;
     }
 
     bool didTheEmptyCellChange = false;
     while (true) {
         arrayIndex = 1;
         if (axisLine[playerIndex] != 'P')
-            return SemiStable;
+            return OthelloAI::SemiStable;
         didTheEmptyCellChange = false;
         while (axisLine[arrayIndex] != 'X' && axisLine[arrayIndex] != 'E')
             arrayIndex++;
@@ -267,7 +367,7 @@ inline OthelloAI::DiscStabilityState OthelloAI::checkAxisStability(
         // occupied by discs, then the desired 
         // disc cannot be flipped on that axis.
         if (axisLine[arrayIndex] == 'X')
-            return Stable;
+            return OthelloAI::Stable;
         
         if (axisLine[arrayIndex] == 'E') {
             char disc;
@@ -320,9 +420,9 @@ inline OthelloAI::DiscStabilityState OthelloAI::checkAxisStability(
             }
         }
         if (axisLine[playerIndex] == 'P' && !didTheEmptyCellChange)
-            return Stable;
+            return OthelloAI::Stable;
     }
-    return Unstable;
+    return OthelloAI::Unstable;
 }
 
 inline float OthelloAI::calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const {
