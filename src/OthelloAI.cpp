@@ -1,7 +1,6 @@
 #include "OthelloAI.hpp"
 
 #include <algorithm>
-#include <array>
 
 namespace othello {
 
@@ -235,6 +234,76 @@ inline OthelloAI::DiscStabilityState OthelloAI::checkAxisStability(
             return Unstable;
     }
 
+    bool didTheEmptyCellChange = false;
+    while (true) {
+        arrayIndex = 1;
+        if (axisLine[playerIndex] != 'P')
+            return SemiStable;
+        didTheEmptyCellChange = false;
+        while (axisLine[arrayIndex] != 'X' && axisLine[arrayIndex] != 'E')
+            arrayIndex++;
+
+        // When there is no empty cell on the 
+        // desired axis and the entire axis is 
+        // occupied by discs, then the desired 
+        // disc cannot be flipped on that axis.
+        if (axisLine[arrayIndex] == 'X')
+            return Stable;
+        
+        if (axisLine[arrayIndex] == 'E') {
+            char disc;
+            int counter = arrayIndex + 1;
+            if (axisLine[counter] != 'X' && axisLine[counter] != 'E') {
+                disc = axisLine[counter];
+                while (axisLine[counter] == disc)
+                    counter++;
+                if (axisLine[counter] == ((disc == 'P')?'O':'P')) {
+                    counter--;
+                    while (axisLine[counter] == disc) {
+                        axisLine[counter] = (disc == 'P')?'O':'P';
+                        counter--;
+                    }
+                    axisLine[arrayIndex] = (disc == 'P')?'O':'P';
+                    didTheEmptyCellChange = true;
+                }
+            }
+            counter = arrayIndex;
+            if (axisLine[arrayIndex] != 'E') {
+                disc = axisLine[arrayIndex];
+                counter--;
+                if (axisLine[counter] != 'X' && axisLine[counter] != 'E' && axisLine[counter] == ((disc == 'P')?'O':'P')) {
+                    while (axisLine[counter] == ((disc == 'P')?'O':'P'))
+                        counter--;
+                    if (axisLine[counter] == disc) {
+                        counter++;
+                        while (axisLine[counter] == ((disc == 'P')?'O':'P')) {
+                            axisLine[counter] = disc;
+                            counter++;
+                        }
+                    }
+                }
+            } else if (axisLine[arrayIndex] == 'E') {
+                counter--;
+                if (axisLine[counter] != 'X' && axisLine[counter] != 'E') {
+                    disc = axisLine[counter];
+                    while (axisLine[counter] == disc)
+                        counter--;
+                    if (axisLine[counter] == ((disc == 'P')?'O':'P')) {
+                        counter++;
+                        while (axisLine[counter] == disc) {
+                            axisLine[counter] = (disc == 'P')?'O':'P';
+                            counter++;
+                        }
+                        axisLine[arrayIndex] = (disc == 'P')?'O':'P';
+                        didTheEmptyCellChange = true;
+                    }
+                }
+            }
+        }
+        if (axisLine[playerIndex] == 'P' && !didTheEmptyCellChange)
+            return Stable;
+    }
+    return Unstable;
 }
 
 inline float OthelloAI::calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const {
