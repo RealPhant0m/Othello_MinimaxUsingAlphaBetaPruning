@@ -44,7 +44,7 @@ private:
     Player player_;
 
     // Driver Function
-    std::pair<int, int> minimaxDriver(const OthelloBoard& board, Player player, int depth);
+    Move minimaxDriver(const OthelloBoard& board, Player player, int depth);
     // Worker Function
     float minimaxUsingAlphaBetaPruning(const OthelloBoard& board, Player player, unsigned int depth, float alpha, float beta, bool isMaximizingPlayerTurn);
 

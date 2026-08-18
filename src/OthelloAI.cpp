@@ -450,6 +450,35 @@ inline float OthelloAI::calculateCoinParity(const OthelloBoard& board, Player pl
     return 0;
 }
 
+Move OthelloAI::minimaxDriver(const OthelloBoard& board, Player player, int depth) {
+
+    visitedNodesCount_++;
+    Move bestMove;
+    bestMove.row = -1;
+    bestMove.col = -1;
+    float bestMoveScore = NEGATIVE_INFINITY;
+    auto playerValidMoves = board.getValidMoves(player);
+    float alpha = NEGATIVE_INFINITY;
+    float beta = POSITIVE_INFINITY;
+
+    for (const auto& move : playerValidMoves) {
+        const OthelloBoard nextBoard = OthelloBoard(board.applyMove(move, player));
+        float moveScore = minimaxUsingAlphaBetaPruning(nextBoard, player, depth - 1, alpha, beta, false);
+
+        if (moveScore > bestMoveScore) {
+            bestMoveScore = moveScore;
+            bestMove = move;
+        }
+
+        alpha = std::max(alpha, bestMoveScore);
+
+        // Prune the remaining branches when beta <= alpha
+        if (beta <= alpha)
+            break;
+    }
+    return bestMove;
+}
+
 float OthelloAI::minimaxUsingAlphaBetaPruning(
     const OthelloBoard& board, 
     Player player, 
@@ -514,6 +543,5 @@ float OthelloAI::minimaxUsingAlphaBetaPruning(
         return bestMoveScore;
     }
 }
-
 
 } // namespace othello
