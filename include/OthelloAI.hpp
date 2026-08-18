@@ -43,6 +43,8 @@ private:
 
     Player player_;
 
+    float minimaxUsingAlphaBetaPruning(const OthelloBoard& board, Player player, unsigned int depth, float alpha, float beta, bool isMaximizingPlayer);
+
     // Evaluation Function
     float evaluate(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const;
 
