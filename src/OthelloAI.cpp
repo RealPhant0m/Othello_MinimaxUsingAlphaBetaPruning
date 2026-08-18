@@ -450,4 +450,70 @@ inline float OthelloAI::calculateCoinParity(const OthelloBoard& board, Player pl
     return 0;
 }
 
+float OthelloAI::minimaxUsingAlphaBetaPruning(
+    const OthelloBoard& board, 
+    Player player, 
+    unsigned int depth, 
+    float alpha, 
+    float beta, 
+    bool isMaximizingPlayerTurn) 
+{
+    visitedNodesCount_++;
+    
+    std::vector<Move> playerValidMoves = board.getValidMoves(player);
+    std::vector<Move> opponentValidMoves = board.getValidMoves(OthelloBoard::getOpponent(player));
+
+    if (depth == 0 && board.isGameOver(playerValidMoves, opponentValidMoves))
+        //when Leaf node reached and game is over, returns the evaluation of the board.
+        return evaluate(board, player, playerValidMoves, opponentValidMoves);
+    else if (board.isGameOver(playerValidMoves, opponentValidMoves))
+        return ((weightOfCoinParity_       +
+                 weightOfCornerControl_    +
+                 weightOfMobility_         +
+                 weightOfPotentialCorners_ +
+                 weightOfStability_) * calculateCoinParity(board, player));
+    
+    if (playerValidMoves.empty() && isMaximizingPlayerTurn)
+        isMaximizingPlayerTurn = false;
+    if (opponentValidMoves.empty() && !isMaximizingPlayerTurn)
+        isMaximizingPlayerTurn = true;
+
+    float bestMoveScore; 
+    bestMoveScore = (isMaximizingPlayerTurn)?NEGATIVE_INFINITY:POSITIVE_INFINITY;
+
+    if (isMaximizingPlayerTurn) {
+        for (const auto& move : playerValidMoves) {
+            const OthelloBoard nextBoard = OthelloBoard(board.applyMove(move, player));
+            float moveScore = minimaxUsingAlphaBetaPruning(nextBoard, player, depth - 1, alpha, beta, false);
+
+            if (moveScore > bestMoveScore)
+                bestMoveScore = moveScore;
+            
+            alpha = std::max(alpha, bestMoveScore);
+
+            // Prune the remaining branches when beta <= alpha
+            if (beta <= alpha)
+                break;
+        }
+        return bestMoveScore;
+    } 
+    else {
+        for (const auto& move : opponentValidMoves) {
+            const OthelloBoard nextBoard = OthelloBoard(board.applyMove(move, player));
+            float moveScore = minimaxUsingAlphaBetaPruning(nextBoard, player, depth - 1, alpha, beta, true);
+
+            if (moveScore < bestMoveScore)
+                bestMoveScore = moveScore;
+            
+            beta = std::min(beta, bestMoveScore);
+
+            // Prune the remaining branches when beta <= alpha
+            if (beta <= alpha)
+                break;
+        }
+        return bestMoveScore;
+    }
+}
+
+
 } // namespace othello

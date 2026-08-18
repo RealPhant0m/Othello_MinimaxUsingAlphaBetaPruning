@@ -36,14 +36,14 @@ private:
     };
 
     // To count the number of nodes visited in the minimax algorithm.
-    mutable unsigned long long visitedNodesCount_ = 0;
+    mutable unsigned long long int visitedNodesCount_ = 0;
 
     // The maximum depth that can be traversed in a Minimax tree.
     unsigned int explorationDepth_;
 
     Player player_;
 
-    float minimaxUsingAlphaBetaPruning(const OthelloBoard& board, Player player, unsigned int depth, float alpha, float beta, bool isMaximizingPlayer);
+    float minimaxUsingAlphaBetaPruning(const OthelloBoard& board, Player player, unsigned int depth, float alpha, float beta, bool isMaximizingPlayerTurn);
 
     // Evaluation Function
     float evaluate(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const;
