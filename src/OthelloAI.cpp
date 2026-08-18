@@ -54,8 +54,8 @@ inline float OthelloAI::calculatePotentialCorners(const OthelloBoard& board, Pla
     const auto& boardFormat = board.board();
 
     auto checkPotentialCorner = [&boardFormat, &player, &playerPotentialCornersCount, &opponentPotentialCornersCount] 
-                                (int _dr, int _dc, int directionIndex) {
-                            
+                                (int _dr, int _dc, int directionIndex) 
+    {
         if (boardFormat[_dr][_dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
             while (OthelloBoard::isInside(_dr, _dc) && boardFormat[_dr][_dc] == OthelloBoard::toChar(OthelloBoard::getOpponent(player))) {
                 _dr += directions[directionIndex].first;
@@ -450,8 +450,15 @@ inline float OthelloAI::calculateCoinParity(const OthelloBoard& board, Player pl
     return 0;
 }
 
-Move OthelloAI::minimaxDriver(const OthelloBoard& board, Player player, int depth) {
+Move OthelloAI::chooseMove(const OthelloBoard& board) {
+    visitedNodesCount_ = 0; // Reset the visited nodes count before starting the search.
 
+    Move bestMove = minimaxDriver(board, player_, explorationDepth_);
+
+    return bestMove;
+}
+
+Move OthelloAI::minimaxDriver(const OthelloBoard& board, Player player, int depth) {
     visitedNodesCount_++;
     Move bestMove;
     bestMove.row = -1;

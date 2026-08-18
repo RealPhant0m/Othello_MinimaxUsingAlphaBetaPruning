@@ -13,7 +13,7 @@ public:
     OthelloAI(Player player, unsigned int explorationDepth = 6);
 
     // Main public entry point.
-    Move chooseMove(const OthelloBoard& board) const;
+    Move chooseMove(const OthelloBoard& board);
 
     // This controls whether the depth of the search is less than or 
     // greater than a certain limit. If more than about 10 or 11 depth is entered, 
