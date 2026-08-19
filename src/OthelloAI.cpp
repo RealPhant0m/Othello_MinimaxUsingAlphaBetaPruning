@@ -4,7 +4,8 @@
 
 namespace othello {
 
-OthelloAI::OthelloAI(Player player, unsigned int explorationDepth = 6) : player_(player) {
+OthelloAI::OthelloAI(Player player, unsigned int explorationDepth = 6) {
+    player_ = player;
     setExplorationDepth(explorationDepth);
 }
 
