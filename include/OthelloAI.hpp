@@ -55,7 +55,7 @@ private:
     inline float calculateCornerControl(const OthelloBoard& board, Player player) const;
     inline float calculatePotentialCorners(const OthelloBoard& board, Player player) const;
     inline float calculateStability(const OthelloBoard& board, Player player) const;
-    inline float calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const;
+    inline float calculateMobility(std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const;
     inline float calculateCoinParity(const OthelloBoard& board, Player player) const;
 
     // This method examines all four axes 

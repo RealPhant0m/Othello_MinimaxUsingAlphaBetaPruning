@@ -22,11 +22,11 @@ unsigned long long OthelloAI::getVisitedNodesCount() const {
 }
 
 float OthelloAI::evaluate(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const {
-    return (((weightOfCornerControl_    != 0 ) ? (weightOfCornerControl_    * calculateCornerControl(board, player))                                  : (0)) +
-            ((weightOfPotentialCorners_ != 0 ) ? (weightOfPotentialCorners_ * calculatePotentialCorners(board, player))                               : (0)) +
-            ((weightOfStability_        != 0 ) ? (weightOfStability_        * calculateStability(board, player))                                      : (0)) +
-            ((weightOfMobility_         != 0 ) ? (weightOfMobility_         * calculateMobility(board, player, playerValidMoves, opponentValidMoves)) : (0)) +
-            ((weightOfCoinParity_       != 0 ) ? (weightOfCoinParity_       * calculateCoinParity(board, player))                                     : (0)));
+    return (((weightOfCornerControl_    != 0 ) ? (weightOfCornerControl_    * calculateCornerControl(board, player))                   : (0)) +
+            ((weightOfPotentialCorners_ != 0 ) ? (weightOfPotentialCorners_ * calculatePotentialCorners(board, player))                : (0)) +
+            ((weightOfStability_        != 0 ) ? (weightOfStability_        * calculateStability(board, player))                       : (0)) +
+            ((weightOfMobility_         != 0 ) ? (weightOfMobility_         * calculateMobility(playerValidMoves, opponentValidMoves)) : (0)) +
+            ((weightOfCoinParity_       != 0 ) ? (weightOfCoinParity_       * calculateCoinParity(board, player))                      : (0)));
 }
 
 inline float OthelloAI::calculateCornerControl(const OthelloBoard& board, Player player) const {
@@ -425,7 +425,7 @@ inline OthelloAI::DiscStabilityState OthelloAI::checkAxisStability(
     return OthelloAI::Unstable;
 }
 
-inline float OthelloAI::calculateMobility(const OthelloBoard& board, Player player, std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const {
+inline float OthelloAI::calculateMobility(std::vector<Move>& playerValidMoves, std::vector<Move>& opponentValidMoves) const {
     int playerValidMovesCount = playerValidMoves.size();
     int opponentValidMovesCount = opponentValidMoves.size();
     if (playerValidMovesCount + opponentValidMovesCount != 0)
