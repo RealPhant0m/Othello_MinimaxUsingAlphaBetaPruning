@@ -11,7 +11,12 @@ void testInitialBoardState() {
 
     for (int row = 0; row < BOARD_SIZE; ++row) {
         for (int col = 0; col < BOARD_SIZE; ++col) {
-            assert(board.board()[row][col] == OthelloBoard::toChar(Player::Empty));
+            if ((row == 3 && col == 3) || (row == 4 && col == 4))
+                assert(board.board()[row][col] == OthelloBoard::toChar(Player::White));
+            else if ((row == 3 && col == 4) || (row == 4 && col == 3))
+                assert(board.board()[row][col] == OthelloBoard::toChar(Player::Black));
+            else
+                assert(board.board()[row][col] == OthelloBoard::toChar(Player::Empty));
         }
     }
 }
@@ -30,7 +35,7 @@ void testConvertBoardFormatRoundTrip() {
 void testGetValidMovesEmptyBoard() {
     OthelloBoard board;
     auto validMoves = board.getValidMoves(Player::Black);
-    assert(validMoves.empty());
+    assert(!validMoves.empty());
 }
 
 void testApplyMoveFlipsDiscs() {
