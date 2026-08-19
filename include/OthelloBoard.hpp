@@ -54,7 +54,7 @@ public:
     explicit OthelloBoard(const Board& board);
 
     // Board state helpers.
-    void reset();
+    void resetBoardToInitialPosition();
     void convertBoardFormat(const std::string& boardString);
     std::string convertBoardFormat() const;
     const Board& board() const;

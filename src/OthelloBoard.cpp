@@ -5,7 +5,7 @@
 namespace othello {
 
 OthelloBoard::OthelloBoard() {
-    reset();
+    resetBoardToInitialPosition();
 }
 
 OthelloBoard::OthelloBoard(const Board& board) {
@@ -114,12 +114,16 @@ const Board& OthelloBoard::board() const {
     return board_;
 }
 
-void OthelloBoard::reset() {
+void OthelloBoard::resetBoardToInitialPosition() {
     for (int row = 0; row < BOARD_SIZE; ++row) {
         for (int col = 0; col < BOARD_SIZE; ++col) {
             board_[row][col] = toChar(Player::Empty);
         }
     }
+    board_[3][3] = toChar(Player::White);
+    board_[3][4] = toChar(Player::Black);
+    board_[4][3] = toChar(Player::Black);
+    board_[4][4] = toChar(Player::White);
 }
 
 unsigned int OthelloBoard::countDiscsOnBoard() const {
