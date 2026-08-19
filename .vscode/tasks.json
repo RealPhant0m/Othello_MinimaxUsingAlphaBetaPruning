@@ -26,6 +26,30 @@
             }
         },
         {
+            "label": "build OthelloAI test",
+            "type": "shell",
+            "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "args": [
+                "-std=c++17",
+                "-fpermissive",
+                "-g",
+                "-I${workspaceFolder}/include",
+                "${workspaceFolder}/tests/test_OthelloAI/test_OthelloAI.cpp",
+                "-o",
+                "${workspaceFolder}/tests/test_OthelloAI/test_OthelloAI.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
             "type": "cppbuild",
             "label": "C/C++: gcc.exe build active file",
             "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe",

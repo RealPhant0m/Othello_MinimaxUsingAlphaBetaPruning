@@ -14,6 +14,20 @@
       "MIMode": "gdb",
       "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
       "preLaunchTask": "build OthelloBoard test"
+    },
+    {
+      "name": "Debug OthelloAI test",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/tests/test_OthelloAI/test_OthelloAI.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+      "preLaunchTask": "build OthelloAI test"
     }
   ]
 }
