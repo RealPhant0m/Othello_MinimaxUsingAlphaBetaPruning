@@ -4,12 +4,12 @@
 
 namespace othello {
 
-OthelloAI::OthelloAI(Player player, unsigned int explorationDepth = 6) {
+OthelloAI::OthelloAI(Player player, int explorationDepth) {
     player_ = player;
     setExplorationDepth(explorationDepth);
 }
 
-void OthelloAI::setExplorationDepth(int depth = 6) {
+void OthelloAI::setExplorationDepth(int depth) {
     if (depth >= 0 && depth <= 11)
         explorationDepth_ = depth;
     else

@@ -10,7 +10,7 @@ namespace othello {
 // It depends on the board engine but does not manipulate the board directly in the UI layer.
 class OthelloAI {
 public:
-    OthelloAI(Player player, unsigned int explorationDepth = 6);
+    OthelloAI(Player player, int explorationDepth = 6);
 
     // Main public entry point.
     Move chooseMove(const OthelloBoard& board);
