@@ -536,7 +536,7 @@ float OthelloAI::minimaxUsingAlphaBetaPruning(
     } 
     else {
         for (const auto& move : opponentValidMoves) {
-            const OthelloBoard nextBoard = OthelloBoard(board.applyMove(move, player));
+            const OthelloBoard nextBoard = OthelloBoard(board.applyMove(move, OthelloBoard::getOpponent(player)));
             float moveScore = minimaxUsingAlphaBetaPruning(nextBoard, player, depth - 1, alpha, beta, true);
 
             if (moveScore < bestMoveScore)
