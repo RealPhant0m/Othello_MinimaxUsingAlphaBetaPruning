@@ -186,8 +186,17 @@ void testChooseMoveAndVisitedNodeCount() {
         "00000000", "00000000", "00000000", "00012000",
         "00021000", "00000000", "00000000", "00000000"
     });
-
     Move move = ai.chooseMove(initialPosition);
+    assert(move.row >= 0 && move.row < BOARD_SIZE);
+    assert(move.col >= 0 && move.col < BOARD_SIZE);
+    assert(!move.flippableDirections.empty());
+    assert(ai.getVisitedNodesCount() > 0);
+
+    initialPosition = boardFromRows({
+        "00000000", "00000000", "00000000", "00212000",
+        "00021000", "00000000", "00000000", "00000000"
+    });
+    move = ai.chooseMove(initialPosition);
     assert(move.row >= 0 && move.row < BOARD_SIZE);
     assert(move.col >= 0 && move.col < BOARD_SIZE);
     assert(!move.flippableDirections.empty());
