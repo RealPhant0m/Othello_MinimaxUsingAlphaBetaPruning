@@ -8,7 +8,7 @@ OthelloAI::OthelloAI(Player player, unsigned int explorationDepth = 6) : player_
     setExplorationDepth(explorationDepth);
 }
 
-void OthelloAI::setExplorationDepth(unsigned int depth = 6) {
+void OthelloAI::setExplorationDepth(int depth = 6) {
     if (depth >= 0 && depth <= 11)
         explorationDepth_ = depth;
     else

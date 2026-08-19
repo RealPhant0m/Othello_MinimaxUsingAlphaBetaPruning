@@ -19,7 +19,7 @@ public:
     // greater than a certain limit. If more than about 10 or 11 depth is entered, 
     // the tree search will take a long time, so if a depth greater than 
     // the specified value is mistakenly entered, this method sets it to the specified maximum value.
-    void setExplorationDepth(unsigned int depth = 6);
+    void setExplorationDepth(int depth = 6);
 
     // Optional statistics for debugging.
     unsigned long long getVisitedNodesCount() const;
@@ -39,7 +39,7 @@ private:
     mutable unsigned long long int visitedNodesCount_ = 0;
 
     // The maximum depth that can be traversed in a Minimax tree.
-    unsigned int explorationDepth_;
+    int explorationDepth_;
 
     Player player_;
 
