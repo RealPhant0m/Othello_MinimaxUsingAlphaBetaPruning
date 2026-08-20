@@ -182,26 +182,37 @@ void testEvaluateinitialBoard() {
 
 void testChooseMoveAndVisitedNodeCount() {
     OthelloAI ai(Player::Black, 1);
-    auto initialPosition = boardFromRows({
+    auto board = boardFromRows({
         "00000000", "00000000", "00000000", "00012000",
         "00021000", "00000000", "00000000", "00000000"
     });
-    Move move = ai.chooseMove(initialPosition);
+    Move move = ai.chooseMove(board);
     assert(move.row >= 0 && move.row < BOARD_SIZE);
     assert(move.col >= 0 && move.col < BOARD_SIZE);
     assert(!move.flippableDirections.empty());
     assert(ai.getVisitedNodesCount() > 0);
 
     ai.setExplorationDepth(0);
-    initialPosition = boardFromRows({
+    board = boardFromRows({
         "00000000", "00000000", "00000000", "00212000",
         "00021000", "00000000", "00000000", "00000000"
     });
-    move = ai.chooseMove(initialPosition);
+    move = ai.chooseMove(board);
     assert(move.row >= 0 && move.row < BOARD_SIZE);
     assert(move.col >= 0 && move.col < BOARD_SIZE);
     assert(!move.flippableDirections.empty());
     assert(ai.getVisitedNodesCount() > 0);
+    
+    OthelloAI whiteAiplayer(Player::White, 7);
+    board = boardFromRows({
+        "00111000", "00111200", "02222000", "00121000",
+        "01111000", "10100000", "00100000", "00000000"
+    });
+    move = whiteAiplayer.chooseMove(board);
+    assert(move.row >= 0 && move.row < BOARD_SIZE);
+    assert(move.col >= 0 && move.col < BOARD_SIZE);
+    assert(!move.flippableDirections.empty());
+    assert(whiteAiplayer.getVisitedNodesCount() > 0);
 }
 
 } // namespace
