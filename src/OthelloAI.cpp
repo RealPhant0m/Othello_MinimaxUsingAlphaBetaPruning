@@ -490,7 +490,7 @@ Move OthelloAI::minimaxDriver(const OthelloBoard& board, Player player, int dept
 float OthelloAI::minimaxUsingAlphaBetaPruning(
     const OthelloBoard& board, 
     Player player, 
-    unsigned int depth, 
+    int depth, 
     float alpha, 
     float beta, 
     bool isMaximizingPlayerTurn) 
@@ -500,7 +500,7 @@ float OthelloAI::minimaxUsingAlphaBetaPruning(
     std::vector<Move> playerValidMoves = board.getValidMoves(player);
     std::vector<Move> opponentValidMoves = board.getValidMoves(OthelloBoard::getOpponent(player));
 
-    if (depth == 0 && !board.isGameOver(playerValidMoves, opponentValidMoves))
+    if (depth <= 0 && !board.isGameOver(playerValidMoves, opponentValidMoves))
         //when Leaf node reached and game is over, returns the evaluation of the board.
         return evaluate(board, player, playerValidMoves, opponentValidMoves);
     else if (board.isGameOver(playerValidMoves, opponentValidMoves))
