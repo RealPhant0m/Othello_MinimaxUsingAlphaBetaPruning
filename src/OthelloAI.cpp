@@ -500,9 +500,11 @@ float OthelloAI::minimaxUsingAlphaBetaPruning(
     std::vector<Move> playerValidMoves = board.getValidMoves(player);
     std::vector<Move> opponentValidMoves = board.getValidMoves(OthelloBoard::getOpponent(player));
 
+    // when depth limit reached and game is not over, returns the total evaluation of the board.
     if (depth <= 0 && !board.isGameOver(playerValidMoves, opponentValidMoves))
-        //when Leaf node reached and game is over, returns the evaluation of the board.
         return evaluate(board, player, playerValidMoves, opponentValidMoves);
+
+    // when Leaf node reached and game is over, returns the coin parity evaluation of the board
     else if (board.isGameOver(playerValidMoves, opponentValidMoves))
         return ((weightOfCoinParity_       +
                  weightOfCornerControl_    +
