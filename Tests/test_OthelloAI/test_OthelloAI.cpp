@@ -192,6 +192,7 @@ void testChooseMoveAndVisitedNodeCount() {
     assert(!move.flippableDirections.empty());
     assert(ai.getVisitedNodesCount() > 0);
 
+    ai.setExplorationDepth(0);
     initialPosition = boardFromRows({
         "00000000", "00000000", "00000000", "00212000",
         "00021000", "00000000", "00000000", "00000000"
