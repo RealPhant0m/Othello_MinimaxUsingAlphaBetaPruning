@@ -69,7 +69,7 @@ private:
         int colOfDisc
     ) const;
 
-    // This auxiliary method examines one of the 
+    // This auxiliary function examines one of the 
     // four axes of the disk in question at any given moment.
     inline DiscStabilityState checkAxisStability(
         const OthelloBoard& board,
