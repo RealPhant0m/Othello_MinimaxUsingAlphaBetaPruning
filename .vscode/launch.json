@@ -5,7 +5,7 @@
       "name": "Debug OthelloBoard test",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/Tests/test_OthelloBoard/test_OthelloBoard.exe",
+      "program": "${workspaceFolder}/tests/test_OthelloBoard/test_OthelloBoard.exe",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

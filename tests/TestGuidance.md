@@ -8,7 +8,7 @@ The relevant layout is:
 
 - `include/OthelloBoard.hpp`
 - `src/OthelloBoard.cpp`
-- `Tests/test_OthelloBoard/test_OthelloBoard.cpp`
+- `tests/test_OthelloBoard/test_OthelloBoard.cpp`
 
 The test file uses the header and the implementation file. That means the compiler must compile and link both files together.
 
@@ -23,7 +23,7 @@ Open a terminal at the repository root:
 Run this command:
 
 ```powershell
-g++ -std=c++17 -g -Iinclude src/OthelloBoard.cpp Tests/test_OthelloBoard/test_OthelloBoard.cpp -o Tests/test_OthelloBoard/test_OthelloBoard.exe
+g++ -std=c++17 -g -Iinclude src/OthelloBoard.cpp tests/test_OthelloBoard/test_OthelloBoard.cpp -o tests/test_OthelloBoard/test_OthelloBoard.exe
 ```
 
 Explanation:
@@ -32,13 +32,13 @@ Explanation:
 - `-g` includes debug symbols, which are needed for debugging.
 - `-Iinclude` tells the compiler where to find header files.
 - `src/OthelloBoard.cpp` is the implementation file for the `OthelloBoard` class.
-- `Tests/test_OthelloBoard/test_OthelloBoard.cpp` is the test file.
-- `-o Tests/test_OthelloBoard/test_OthelloBoard.exe` writes the executable into the test folder.
+- `tests/test_OthelloBoard/test_OthelloBoard.cpp` is the test file.
+- `-o tests/test_OthelloBoard/test_OthelloBoard.exe` writes the executable into the test folder.
 
 Then run the executable:
 
 ```powershell
-Tests\test_OthelloBoard\test_OthelloBoard.exe
+tests\test_OthelloBoard\test_OthelloBoard.exe
 ```
 
 If the build succeeds, the program should print:
@@ -53,7 +53,7 @@ All OthelloBoard tests passed.
 
 Open a terminal in the test folder:
 
-`\Othello_MinimaxWithAlpha-Beta-Pruning\Tests\test_OthelloBoard`
+`\Othello_MinimaxWithAlpha-Beta-Pruning\tests\test_OthelloBoard`
 
 Run:
 
@@ -99,9 +99,9 @@ Example `tasks.json` entry:
     "-g",
     "-I${workspaceFolder}/include",
     "${workspaceFolder}/src/OthelloBoard.cpp",
-    "${workspaceFolder}/Tests/test_OthelloBoard/test_OthelloBoard.cpp",
+    "${workspaceFolder}/tests/test_OthelloBoard/test_OthelloBoard.cpp",
     "-o",
-    "${workspaceFolder}/Tests/test_OthelloBoard/test_OthelloBoard.exe"
+    "${workspaceFolder}/tests/test_OthelloBoard/test_OthelloBoard.exe"
   ],
   "options": {
     "cwd": "${workspaceFolder}"
@@ -129,7 +129,7 @@ Example `launch.json` entry:
   "name": "Debug OthelloBoard test",
   "type": "cppdbg",
   "request": "launch",
-  "program": "${workspaceFolder}/Tests/test_OthelloBoard/test_OthelloBoard.exe",
+  "program": "${workspaceFolder}/tests/test_OthelloBoard/test_OthelloBoard.exe",
   "args": [],
   "stopAtEntry": false,
   "cwd": "${workspaceFolder}",
@@ -154,7 +154,7 @@ Important points:
 1. Make sure the custom build task is saved in `.vscode/tasks.json`.
 2. Make sure the debug configuration is saved in `.vscode/launch.json`.
 3. Build once with the task or use `Ctrl+Shift+B`.
-4. Set breakpoints inside `Tests/test_OthelloBoard/test_OthelloBoard.cpp` or `src/OthelloBoard.cpp`.
+4. Set breakpoints inside `tests/test_OthelloBoard/test_OthelloBoard.cpp` or `src/OthelloBoard.cpp`.
 5. Start the debug configuration.
 
 If the executable is not built, the `preLaunchTask` will build it first.
@@ -174,7 +174,7 @@ If the executable is not built, the `preLaunchTask` will build it first.
 ### Build from root
 
 ```powershell
-g++ -std=c++17 -g -Iinclude src/OthelloBoard.cpp Tests/test_OthelloBoard/test_OthelloBoard.cpp -o Tests/test_OthelloBoard/test_OthelloBoard.exe
+g++ -std=c++17 -g -Iinclude src/OthelloBoard.cpp tests/test_OthelloBoard/test_OthelloBoard.cpp -o tests/test_OthelloBoard/test_OthelloBoard.exe
 ```
 
 ### Build from test folder
@@ -186,7 +186,7 @@ g++ -std=c++17 -g -I../../include ../../src/OthelloBoard.cpp test_OthelloBoard.c
 ### Run the test
 
 ```powershell
-Tests\test_OthelloBoard\test_OthelloBoard.exe
+tests\test_OthelloBoard\test_OthelloBoard.exe
 ```
 
 ### Debug in VS Code
@@ -199,7 +199,7 @@ Tests\test_OthelloBoard\test_OthelloBoard.exe
 
 ## 9. Running and debugging `test_BoardUtils.cpp`
 
-The `BoardUtils` test file is located at `Tests/test_BoardUtils/test_BoardUtils.cpp` and exercises the `BoardUtils` methods for formatting, printing, and coordinate conversion.
+The `BoardUtils` test file is located at `tests/test_BoardUtils/test_BoardUtils.cpp` and exercises the `BoardUtils` methods for formatting, printing, and coordinate conversion.
 
 ### 9.1. Compile and run from the project root
 
@@ -218,13 +218,13 @@ cd .\Othello_MinimaxWithAlpha-BetaPruning
 Run:
 
 ```powershell
-g++ -std=c++17 -g -Iinclude src/BoardUtils.cpp src/OthelloBoard.cpp Tests/test_BoardUtils/test_BoardUtils.cpp -o Tests/test_BoardUtils/test_BoardUtils.exe
+g++ -std=c++17 -g -Iinclude src/BoardUtils.cpp src/OthelloBoard.cpp tests/test_BoardUtils/test_BoardUtils.cpp -o tests/test_BoardUtils/test_BoardUtils.exe
 ```
 
 Then execute:
 
 ```powershell
-Tests\test_BoardUtils\test_BoardUtils.exe
+tests\test_BoardUtils\test_BoardUtils.exe
 ```
 
 Expected output:
@@ -238,7 +238,7 @@ All BoardUtils tests passed.
 Open a terminal in the test folder. From the repository root, use:
 
 ```powershell
-cd .\Tests\test_BoardUtils
+cd .\tests\test_BoardUtils
 ```
 
 Run:
@@ -269,7 +269,7 @@ To debug this file in Visual Studio Code, use a task that includes both implemen
 Example build task command:
 
 ```powershell
-g++ -std=c++17 -g -I${workspaceFolder}/include ${workspaceFolder}/src/BoardUtils.cpp ${workspaceFolder}/src/OthelloBoard.cpp ${workspaceFolder}/Tests/test_BoardUtils/test_BoardUtils.cpp -o ${workspaceFolder}/Tests/test_BoardUtils/test_BoardUtils.exe
+g++ -std=c++17 -g -I${workspaceFolder}/include ${workspaceFolder}/src/BoardUtils.cpp ${workspaceFolder}/src/OthelloBoard.cpp ${workspaceFolder}/tests/test_BoardUtils/test_BoardUtils.cpp -o ${workspaceFolder}/tests/test_BoardUtils/test_BoardUtils.exe
 ```
 
 Then use a launch configuration that points to:
@@ -280,7 +280,7 @@ Example `launch.json` entry:
   "name": "Debug BoardUtils test",
   "type": "cppdbg",
   "request": "launch",
-  "program": "${workspaceFolder}/Tests/test_BoardUtils/test_BoardUtils.exe",
+  "program": "${workspaceFolder}/tests/test_BoardUtils/test_BoardUtils.exe",
   "args": [],
   "stopAtEntry": false,
   "cwd": "${workspaceFolder}",
@@ -294,7 +294,7 @@ Example `launch.json` entry:
 
 Recommended debugging steps:
 
-1. Set breakpoints inside `Tests/test_BoardUtils/test_BoardUtils.cpp`.
+1. Set breakpoints inside `tests/test_BoardUtils/test_BoardUtils.cpp`.
 2. Build the test with the command above.
 3. Start the debugger from the Run and Debug panel.
 4. Step through the test functions to inspect the values returned by `BoardUtils::formatBoard`, `BoardUtils::printBoard`, `BoardUtils::toCoordinates`, and `BoardUtils::toIndex`.
@@ -302,5 +302,5 @@ Recommended debugging steps:
 ### 9.5. Troubleshooting the BoardUtils test
 
 - If you see `undefined reference`, ensure both `src/BoardUtils.cpp` and `src/OthelloBoard.cpp` are included in the build command.
-- If the debugger cannot launch the executable, confirm that `Tests/test_BoardUtils/test_BoardUtils.exe` exists after the build.
-- If the test fails, check the assertion line in `Tests/test_BoardUtils/test_BoardUtils.cpp` to see which case is failing.
+- If the debugger cannot launch the executable, confirm that `tests/test_BoardUtils/test_BoardUtils.exe` exists after the build.
+- If the test fails, check the assertion line in `tests/test_BoardUtils/test_BoardUtils.cpp` to see which case is failing.

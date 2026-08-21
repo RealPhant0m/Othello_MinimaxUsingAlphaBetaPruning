@@ -10,9 +10,9 @@
                 "-g",
                 "-I${workspaceFolder}/include",
                 "${workspaceFolder}/src/OthelloBoard.cpp",
-                "${workspaceFolder}/Tests/test_OthelloBoard/test_OthelloBoard.cpp",
+                "${workspaceFolder}/tests/test_OthelloBoard/test_OthelloBoard.cpp",
                 "-o",
-                "${workspaceFolder}/Tests/test_OthelloBoard/test_OthelloBoard.exe"
+                "${workspaceFolder}/tests/test_OthelloBoard/test_OthelloBoard.exe"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
