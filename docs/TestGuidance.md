@@ -1,4 +1,4 @@
-# OthelloBoard Test Guide
+# Complete Guide to Running [tests](/tests/)
 
 This guide explains how to compile, run, and debug the `test_OthelloBoard.cpp` test file for the `OthelloBoard` class.
 
