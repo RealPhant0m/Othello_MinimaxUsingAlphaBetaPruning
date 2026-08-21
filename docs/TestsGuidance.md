@@ -1,4 +1,4 @@
-# Complete Guide to Building, Running, and Debugging the Tests
+# Complete Guide to Building, Running, and Debugging the [Tests](/tests/)
 
 This guide explains how to build, run, and debug all three test programs in this repository:
 
