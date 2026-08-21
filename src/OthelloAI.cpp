@@ -504,7 +504,7 @@ float OthelloAI::minimaxUsingAlphaBetaPruning(
     if (depth <= 0 && !board.isGameOver(playerValidMoves, opponentValidMoves))
         return evaluate(board, player, playerValidMoves, opponentValidMoves);
 
-    // when Leaf node reached and game is over, returns the coin parity evaluation of the board
+    // when game is over, this means Leaf node reached, and the function returns the coin parity evaluation of the board
     else if (board.isGameOver(playerValidMoves, opponentValidMoves))
         return ((weightOfCoinParity_       +
                  weightOfCornerControl_    +
